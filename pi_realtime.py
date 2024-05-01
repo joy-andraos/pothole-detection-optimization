@@ -8,11 +8,9 @@ from ultralytics import YOLO
 picam2 = Picamera2()
 
 # Configure preview settings
-picam2.preview_configuration.main.size = (1920,1080)  # Adjust the resolution here
+picam2.preview_configuration.main.size = (1920,1080) 
 picam2.preview_configuration.main.format = "BGR888"
 picam2.preview_configuration.align()
-
-# Configure preview
 picam2.configure("preview")
 
 # Start the preview
