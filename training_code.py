@@ -23,7 +23,6 @@ download_file(
     'pothole_dataset_v8.zip'
 )
 
-# Unzip the data file
 def unzip(zip_file=None):
     try:
         with zipfile.ZipFile(zip_file) as z:
@@ -34,7 +33,7 @@ def unzip(zip_file=None):
 
 unzip('pothole_dataset_v8.zip')
 
-# Function to convert bounding boxes in YOLO format to xmin, ymin, xmax, ymax.
+
 def yolo2bbox(bboxes):
     xmin, ymin = bboxes[0]-bboxes[2]/2, bboxes[1]-bboxes[3]/2
     xmax, ymax = bboxes[0]+bboxes[2]/2, bboxes[1]+bboxes[3]/2
@@ -62,7 +61,7 @@ def yolo2bbox(bboxes):
         )
     return image
 
-# Function to plot images with the bounding boxes.
+
 def plot(image_paths, label_paths, num_samples):
     all_images = []
     all_images.extend(glob.glob(image_paths+'/*.jpg'))
@@ -100,7 +99,7 @@ def plot(image_paths, label_paths, num_samples):
     plt.tight_layout()
     plt.show()
 
-# Visualize a few training images.
+
 plot(
     image_paths='datasets/pothole_dataset_v8/train/images/',
     label_paths='datasets/pothole_dataset_v8/train/labels/',
@@ -111,11 +110,11 @@ path: 'pothole_dataset_v8/'
 train: 'train/images'
 val: 'valid/images'
 
-# class names
+
 names:
   0: 'pothole'
 
-# Sample training for 5 epoch.
+
 EPOCHS = 5
 !yolo task=detect mode=train model=yolov8n.pt imgsz=1280 data=pothole_v8.yaml epochs={EPOCHS} batch=8 name=yolov4t_v4_50e
 
@@ -125,36 +124,30 @@ drive.mount('/content/gdrive')
 !cp -r /content/gdrive/MyDrive/best.pt /content/runs/detect/yolov8n_v8_50e/weights
 
 !yolo task=detect mode=val model=runs/detect/yolov4t_v4_50e/weights/best.pt name=yolov8n_eval data=pothole_v8.yaml
-  # Read the image
 img = plt.imread("/content/runs/detect/yolov8n_eval/confusion_matrix.png")
 
-# Create a plot and display the image
-plt.imshow(img)
-plt.axis('off')  # Turn off axis labels
 
-# Show the plot
+plt.imshow(img)
+plt.axis('off')  
 plt.show()
 
 image_paths = [
-    '/content/runs/detect/yolov8n_eval/F1_curve.png', # F1-score: 2 *(Precision*Recall)/(Precision+Recall)
+    '/content/runs/detect/yolov8n_eval/F1_curve.png',
     '/content/runs/detect/yolov8n_eval/PR_curve.png',
-    '/content/runs/detect/yolov8n_eval/P_curve.png', #Precision: TP / (TP + FP)
-    '/content/runs/detect/yolov8n_eval/R_curve.png' #Recall (Sensitivity or True Positive Rate): TP / (TP + FN)
+    '/content/runs/detect/yolov8n_eval/P_curve.png', 
+    '/content/runs/detect/yolov8n_eval/R_curve.png' 
 ]
 
-# Create a 2x2 grid for subplots
 fig, axes = plt.subplots(2, 2, figsize=(10, 8))
 
-# Loop through the image paths and plot each image
+
 for i, ax in enumerate(axes.flat):
     img = plt.imread(image_paths[i])
     ax.imshow(img)
-    ax.axis('off')  # Turn off axis labels
+    ax.axis('off')  
 
-# Adjust layout to prevent clipping of axes labels
 plt.tight_layout()
 
-# Show the plot
 plt.show()
 
 !yolo task=detect \
@@ -165,7 +158,7 @@ imgsz=1280 \
 name=yolov4t_v4_50e_infer1280 \
 hide_labels=True
 
-# Plot and visualize images in a 2x2 grid.
+
 def visualize(result_dir, num_samples=4):
     """
     Function accepts a list of images and plots
@@ -185,5 +178,3 @@ def visualize(result_dir, num_samples=4):
     plt.show()
 
 visualize('runs/detect/yolov4t_v4_50e_infer1280/')
-
-
