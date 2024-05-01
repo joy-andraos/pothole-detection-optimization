@@ -8,7 +8,7 @@ import torch.nn.utils.prune as prune
 
 # Initialize Picamera2
 picam2 = Picamera2()
-picam2.preview_configuration.main.size = (640, 640)  # Adjust the resolution here
+picam2.preview_configuration.main.size = (640, 640) 
 picam2.preview_configuration.main.format = "BGR888"
 picam2.preview_configuration.align()
 picam2.configure("preview")
